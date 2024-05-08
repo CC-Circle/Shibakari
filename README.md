@@ -37,8 +37,8 @@
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
 ## 環境
-
-開発が開始次第記述予定
+<a href="https://github.com/CC-Circle/Shibakari/blob/main/ProjectSettings/ProjectVersion.txt">UnityのProjectVersion
+</a>
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
@@ -48,9 +48,16 @@
 ```md
 > tree -L 2 "./"
 ./
+├── Assembly-CSharp.csproj
 ├── Assets
+│   ├── Materials
+│   ├── Materials.meta
+│   ├── Prefabs
+│   ├── Prefabs.meta
 │   ├── Scenes
-│   └── Scenes.meta
+│   ├── Scenes.meta
+│   ├── Scripts
+│   └── Scripts.meta
 ├── Library
 │   ├── APIUpdater
 │   ├── AnnotationManager
@@ -85,8 +92,17 @@
 │   ├── expandedItems
 │   └── ilpp.pid
 ├── Logs
+│   ├── AssetImportWorker0.log
+│   ├── AssetImportWorker1.log
 │   ├── Packages-Update.log
-│   └── shadercompiler-UnityShaderCompiler0.log
+│   ├── shadercompiler-AssetImportWorker0.log
+│   ├── shadercompiler-UnityShaderCompiler0.log
+│   ├── shadercompiler-UnityShaderCompiler1.log
+│   ├── shadercompiler-UnityShaderCompiler2.log
+│   ├── shadercompiler-UnityShaderCompiler3.log
+│   ├── shadercompiler-UnityShaderCompiler4.log
+│   ├── shadercompiler-UnityShaderCompiler5.log
+│   └── shadercompiler-UnityShaderCompiler6.log
 ├── Packages
 │   ├── manifest.json
 │   └── packages-lock.json
@@ -107,6 +123,7 @@
 │   ├── ProjectSettings.asset
 │   ├── ProjectVersion.txt
 │   ├── QualitySettings.asset
+│   ├── SceneTemplateSettings.json
 │   ├── TagManager.asset
 │   ├── TimeManager.asset
 │   ├── UnityConnectSettings.asset
@@ -117,11 +134,13 @@
 ├── UserSettings
 │   ├── EditorUserSettings.asset
 │   ├── Layouts
+│   ├── Search.index
 │   └── Search.settings
-├── shibakari.sln
-└── tree.md
+├── obj
+│   └── Debug
+└── shibakari.sln
 
-20 directories, 53 files
+25 directories, 67 files
 
 ```
 
