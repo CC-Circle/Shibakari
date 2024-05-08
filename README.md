@@ -155,7 +155,7 @@
 ## コミット、プルリクエスト、issue
 以下に従う
 
-https://github.com/CC-Circle/github-practice/blob/main/CONTRIBUTING.md
+https://github.com/CC-Circle/github-practice/blob/main/new_CONTRIBUTING.md
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
