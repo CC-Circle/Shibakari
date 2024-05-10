@@ -45,8 +45,7 @@
 
 ## GitHubの運用方法について
 GitHubフローを使用します．
-
-詳しくは(https://docs.github.com/ja/get-started/using-github/github-flow)を参照．
+(https://docs.github.com/ja/get-started/using-github/github-flow)
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
@@ -161,8 +160,6 @@ GitHubフローを使用します．
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
 ## コミット、プルリクエスト、issue
-以下に従う
-
 (https://github.com/CC-Circle/github-practice/blob/main/new_CONTRIBUTING.md)
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
