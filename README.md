@@ -41,9 +41,12 @@
 <a href="https://github.com/CC-Circle/Shibakari/blob/main/ProjectSettings/ProjectVersion.txt">UnityのProjectVersion
 </a>
 
+<p align="right">(<a href="#top">トップへ</a>)</p>
+
 ## GitHubの運用方法について
 GitHubフローを使用します．
-詳しくは(https://docs.github.com/ja/get-started/using-github/github-flow)を参照してください．
+
+詳しくは(https://docs.github.com/ja/get-started/using-github/github-flow)を参照．
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
@@ -159,6 +162,7 @@ GitHubフローを使用します．
 
 ## コミット、プルリクエスト、issue
 以下に従う
+
 (https://github.com/CC-Circle/github-practice/blob/main/new_CONTRIBUTING.md)
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
