@@ -11,9 +11,11 @@ float temp = 0.0F;
 void setup() {
   M5.begin();  // M5Stackの初期化
   M5.Lcd.setRotation(1);  // モニタ画面の方向を設定
+  M5.Lcd.setTextSize(2);  // フォントサイズを設定
+
   Serial.begin(115200);  // シリアル通信を初期化
 
-  SerialBT.begin("k22065kk"); // Bluetoothを開始し、デバイス名を設定
+  SerialBT.begin("m5stack_shibakari"); // Bluetoothを開始し、デバイス名を設定
   Serial.println("The device started, now you can pair it with Bluetooth!");
 
   M5.IMU.Init();  // 慣性センサーの初期化
@@ -33,7 +35,6 @@ void loop() {
   M5.IMU.getTempData(&temp);
 
   // 画面にセンサーデータを表示
-  M5.Lcd.fillScreen(BLACK);
   M5.Lcd.setCursor(0, 20);
   M5.Lcd.printf("Accel: %.2f, %.2f, %.2f", accX, accY, accZ);
   M5.Lcd.setCursor(0, 40);
@@ -62,5 +63,5 @@ void loop() {
   SerialBT.print("Temp: ");
   SerialBT.println(temp);
 
-  delay(100);  // 100msの一時停止
+  delay(10);  // 100msの一時停止
 }
