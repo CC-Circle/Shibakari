@@ -123,6 +123,60 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &205033763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 205033765}
+  - component: {fileID: 205033764}
+  m_Layer: 0
+  m_Name: Clouds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &205033764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205033763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4494373fd5e41a08cc12c7d894863c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cloudPrefabs:
+  - {fileID: 100000, guid: e482b39d7ed22034ca6a61dd145ee82b, type: 3}
+  - {fileID: 100000, guid: e4517c298d091d0499b08981344c5398, type: 3}
+  - {fileID: 100000, guid: 7adcbac7714161e40bc7421e2762cfde, type: 3}
+  - {fileID: 100000, guid: d75090a6aa124b747a842bf2b5ae80cd, type: 3}
+  - {fileID: 100000, guid: 66b62323586a05541bdf731d7ce0497d, type: 3}
+  numberOfClouds: 25
+  spawnAreaMin: {x: -600, y: 50, z: 400}
+  spawnAreaMax: {x: 600, y: 150, z: 300}
+  cloudSpeed: 4
+--- !u!4 &205033765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205033763}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.4737177, y: 13.37336, z: 39.009552}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,3 +906,4 @@ SceneRoots:
   - {fileID: 1386050259}
   - {fileID: 1006789005}
   - {fileID: 1969147296}
+  - {fileID: 205033765}
