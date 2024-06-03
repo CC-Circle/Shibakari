@@ -13,7 +13,7 @@ public class Start2Main : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Start"))
+        if (other.CompareTag("Change"))
         {
             Debug.Log("change scene");
             Invoke("ChangeScene", 1f);
