@@ -4,7 +4,7 @@ public class SerialReceive : MonoBehaviour
 {
     public SerialHandler serialHandler;
 
-    private float gyroX, gyroY, gyroZ; // 加速度
+    public float gyroX, gyroY, gyroZ; // 加速度(とりあえず加速度のみpublic)
     private float accX, accY, accZ; // ジャイロ
     private float pitch, roll, yaw; // 磁気
     private float temp; // 温度
@@ -58,10 +58,10 @@ public class SerialReceive : MonoBehaviour
                 temp = float.Parse(tempData);
 
                 // Debug.Logへの表示
-                Debug.Log($"Received accel data: {accX}, {accY}, {accZ}");
-                Debug.Log($"Received gyro data: {gyroX}, {gyroY}, {gyroZ}");
-                Debug.Log($"Received mag data: {pitch}, {roll}, {yaw}");
-                Debug.Log($"Received temp data: {temp}");
+                Debug.Log($"Received accel data: X:{accX}, Y:{accY}, Z:{accZ}");
+                // Debug.Log($"Received gyro data: {gyroX}, {gyroY}, {gyroZ}");
+                // Debug.Log($"Received mag data: {pitch}, {roll}, {yaw}");
+                // Debug.Log($"Received temp data: {temp}");
             }
             else
             {
