@@ -8,9 +8,20 @@ public class CutMove : MonoBehaviour
     private int leftRightCount = 0; // 左右の振りカウント
     private bool wasLeft = false; // 前回が左だったか
 
+    private GameObject objectToDestroy = null;//草に触れたかどうかの判定フラグ
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // 衝突したオブジェクトが "grass" タグを持っているか確認
+        if (collision.gameObject.CompareTag("grass"))
+        {
+            // オブジェクトを消すフラグを立てる
+            objectToDestroy = collision.gameObject;
+        }
+    }
     void Update()
     {
-        Debug.Log(serialReceive.Flag);
+        //Debug.Log(serialReceive.Flag);
         // 現在の位置を取得
         Vector3 currentPosition = transform.position;
 
@@ -44,6 +55,12 @@ public class CutMove : MonoBehaviour
         // 左右に一回ずつ振ったら前進
         if (leftRightCount >= 2)
         {
+            // フラグが立っている場合、オブジェクトを消す
+            if (objectToDestroy != null)
+            {
+                Destroy(objectToDestroy);
+                objectToDestroy = null;
+            }
             currentPosition.z += 10; // 前進させる
             transform.position = currentPosition;
             leftRightCount = 0; // カウントをリセット
