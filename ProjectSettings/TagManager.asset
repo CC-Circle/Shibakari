@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Change
   - grass
+  - bundle
   layers:
   - Default
   - TransparentFX

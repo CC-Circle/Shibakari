@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro; 
+using UnityEngine.SceneManagement;
 
 public class TimeCounter : MonoBehaviour
 {
@@ -18,7 +19,14 @@ public class TimeCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //時間を減らしてます
         countdownSec -= Time.deltaTime;
-        timeText.text = countdownSec.ToString();
+        //小数点以下を非表示に変更して代入
+        timeText.text = "TIME : " + Mathf.FloorToInt(countdownSec).ToString("F0");
+
+        if (countdownSec <= 0)//カウント0になったらリザルトへ
+        {
+            SceneManager.LoadScene("end");
+        }
     }
 }
