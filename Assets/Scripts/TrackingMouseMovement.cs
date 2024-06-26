@@ -3,7 +3,7 @@ using UnityEngine;
 public class TrackingMouseMovement : MonoBehaviour
 {
     // オブジェクトの移動速度
-    public float moveSpeed = 0.001f;
+    public float moveSpeed = 2.0f;
 
     private void Update()
     {

@@ -12,7 +12,7 @@ public class Move : MonoBehaviour
     void OnMouseMoved(float deltaX)
     {
         // ここにイベントの実行内容を書く
-        Debug.Log("マウスが移動しました。移動量: " + deltaX);
+        //Debug.Log("マウスが移動しました。移動量: " + deltaX);
         obj.transform.position += _velocity;
     }
 
