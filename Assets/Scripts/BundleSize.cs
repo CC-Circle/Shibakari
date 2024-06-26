@@ -23,7 +23,7 @@ public class BundleSize : MonoBehaviour
             }
             Flag=0;
         }
-        Debug.Log(CutMove.Score/100);
+        Debug.Log(DestroyGrass.Score/10);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -31,7 +31,7 @@ public class BundleSize : MonoBehaviour
         // 衝突したオブジェクトが "grass" タグを持っているか確認
         if (collision.gameObject.CompareTag("grass"))
         {
-            if(COUNT<=CutMove.Score/100){
+            if(COUNT<=DestroyGrass.Score/10){
                 Destroy(collision.gameObject);
                 Flag=1;//フラグを立てる
                 COUNT++;//何回か数える
