@@ -23,6 +23,7 @@ public class End2Start : MonoBehaviour
     // Update is called once per frame
     void ChangeScene()
     {
-        SceneManager.LoadScene("start");
+        //リザルト制作のため一時的に消してます
+        //SceneManager.LoadScene("start");
     }
 }

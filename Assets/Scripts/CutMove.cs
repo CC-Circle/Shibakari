@@ -10,6 +10,8 @@ public class CutMove : MonoBehaviour
 
     private GameObject objectToDestroy = null;//草に触れたかどうかの判定フラグ
 
+    public static int Score;//スコアの変数
+
     void OnCollisionEnter(Collision collision)
     {
         // 衝突したオブジェクトが "grass" タグを持っているか確認
@@ -58,8 +60,11 @@ public class CutMove : MonoBehaviour
             // フラグが立っている場合、オブジェクトを消す
             if (objectToDestroy != null)
             {
+                //オブジェクトを消す
                 Destroy(objectToDestroy);
                 objectToDestroy = null;
+                //スコアを増やす
+                Score+=100;
             }
             currentPosition.z += 10; // 前進させる
             transform.position = currentPosition;
