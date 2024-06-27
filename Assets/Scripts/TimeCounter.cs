@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class TimeCounter : MonoBehaviour
 {
-    public float countdownSec = 40;
+    public float countdownSec = 0;
     public TMP_Text timeText;
 
     // Start is called before the first frame update

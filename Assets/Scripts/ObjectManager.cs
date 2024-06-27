@@ -41,7 +41,6 @@ public class ObjectManager : MonoBehaviour
             float maxZ = 0;
             foreach (var obj in validObjects)
             {
-                Debug.Log(obj.transform.position.z);
                 if (obj.transform.position.z > maxZ)
                 {
                     maxZ = obj.transform.position.z;
