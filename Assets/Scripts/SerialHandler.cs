@@ -8,7 +8,7 @@ public class SerialHandler : MonoBehaviour
     public event SerialDataReceivedEventHandler OnDataReceived;
 
     // 1人対戦用のポート（基本はこっち）
-    private string portName = "/dev/cu.m5stack_shibakari_1";
+    private string portName = "/dev/cu.k22065_M5stick";
     // 2人対戦用のポート（2人対戦実装の時はこっち）
     // private string portName = "/dev/cu.m5stack_shibakari_2";
     public int baudRate = 115200;
@@ -72,6 +72,7 @@ public class SerialHandler : MonoBehaviour
             {
                 string message = serialPort.ReadLine();
                 OnDataReceived?.Invoke(message);
+                Debug.Log(message);
             }
             catch (System.Exception e)
             {

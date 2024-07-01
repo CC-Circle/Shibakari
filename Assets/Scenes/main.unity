@@ -403,6 +403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 345832275}
   - component: {fileID: 345832274}
+  - component: {fileID: 345832276}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -438,6 +439,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &345832276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345832273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 426eb87f46fb24ba7a68316c693cff48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &469276155
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a04eb8a8fb1d472f9fe6979fb0132c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdownSec: 20
+  countdownSec: 50
   timeText: {fileID: 469276158}
 --- !u!114 &469276158
 MonoBehaviour:
@@ -811,7 +824,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serialReceive: {fileID: 739072888}
-  Score: 0
 --- !u!1 &866633914
 GameObject:
   m_ObjectHideFlags: 0
