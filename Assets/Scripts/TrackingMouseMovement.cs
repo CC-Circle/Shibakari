@@ -4,7 +4,7 @@ public class TrackingMouseMovement : MonoBehaviour
 {
     // オブジェクトの移動速度
     public float moveSpeed = 0.001f;
-
+    
     private void Update()
     {
         // マウスのX座標を取得(ビューポート画面の中央を原点とする)
