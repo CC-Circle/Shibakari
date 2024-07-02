@@ -11,7 +11,6 @@ public class CutMove : MonoBehaviour
     private GameObject objectToDestroy = null;//草に触れたかどうかの判定フラグ
 
     public static int Score;//スコアの変数
-
     void OnCollisionEnter(Collision collision)
     {
         // 衝突したオブジェクトが "grass" タグを持っているか確認
@@ -23,7 +22,6 @@ public class CutMove : MonoBehaviour
     }
     void Update()
     {
-        //Debug.Log(serialReceive.Flag);
         // 現在の位置を取得
         Vector3 currentPosition = transform.position;
 

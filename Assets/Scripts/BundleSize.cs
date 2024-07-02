@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BundleSize : MonoBehaviour
 {
-    public int Flag=0,COUNT=0;
+    public int Flag=0,COUNT=3;
 
     public GameObject grass; // プレハブの参照
     public string tagToAssign = "grass"; // タグの名前
@@ -14,16 +14,24 @@ public class BundleSize : MonoBehaviour
 
     float score;
 
+    public GameObject SceneManager; // シーンマネージャーのゲームオブジェクト
+    private MySceneManager mySceneManager; // シーンマネージャースクリプトのインスタンス
+
+    void Start()
+    {
+        mySceneManager = SceneManager.GetComponent<MySceneManager>(); // SceneManagerオブジェクトにアタッチされているMySceneManagerスクリプトを取得
+        
+    }
+
     void Update()
     {
         if(Flag==1){//フラグが立っていれば
-            transform.localScale += new Vector3(0.1f, 0.1f, 0.1f); // x、y、z方向それぞれに0.4ずつサイズを増加させる
-            if(COUNT%20==0){
-                transform.position += new Vector3(0, 1, 0);
-            }
+            // プレハブからオブジェクトを生成
+            GameObject obj = Instantiate(grass, new Vector3(0, 10, 0), Quaternion.identity);
+            // オブジェクトにタグを付ける
+            obj.tag = tagToAssign;
             Flag=0;
         }
-        Debug.Log(CutMove.Score/100);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -31,14 +39,11 @@ public class BundleSize : MonoBehaviour
         // 衝突したオブジェクトが "grass" タグを持っているか確認
         if (collision.gameObject.CompareTag("grass"))
         {
-            if(COUNT<=CutMove.Score/100){
+            if(COUNT<CutMove.Score/100-1){
                 Destroy(collision.gameObject);
-                Flag=1;//フラグを立てる
                 COUNT++;//何回か数える
-                // プレハブからオブジェクトを生成
-                GameObject obj = Instantiate(grass, new Vector3(0, 10, 0), Quaternion.identity);
-                // オブジェクトにタグを付ける
-                obj.tag = tagToAssign;
+                Flag=1;//フラグを立てる
+                transform.localScale += new Vector3(0.1f, 0.1f, 0.1f); // x、y、z方向それぞれに0.4ずつサイズを増加させる
                 score+=100;
                 //単位をつけて代入
                 if(score<1000){
@@ -46,6 +51,10 @@ public class BundleSize : MonoBehaviour
                 }else{
                     Score.text = (score / 1000f).ToString("F1") + "kg";
                 }
+            }else{
+                Destroy(collision.gameObject);
+                score+=100;
+                mySceneManager.flag = true; // MySceneManagerスクリプトを有効化
             }
         }
     }
