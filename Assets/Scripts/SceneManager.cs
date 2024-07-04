@@ -14,8 +14,6 @@ public class MySceneManager : MonoBehaviour
     {
         NowScene = SceneManager.GetActiveScene().name; // 現在のシーン名を変数に代入
 
-        Debug.Log(flag);
-
         if(NowScene == "start")
         {
             if(Input.GetKeyDown(KeyCode.Space))

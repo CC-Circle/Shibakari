@@ -39,7 +39,7 @@ public class BundleSize : MonoBehaviour
         // 衝突したオブジェクトが "grass" タグを持っているか確認
         if (collision.gameObject.CompareTag("grass"))
         {
-            if(COUNT<CutMove.Score/100-1){
+            if(COUNT<OperationSettings.Score/100-1){
                 Destroy(collision.gameObject);
                 COUNT++;//何回か数える
                 Flag=1;//フラグを立てる
