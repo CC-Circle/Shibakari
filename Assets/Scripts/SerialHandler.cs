@@ -16,28 +16,8 @@ public class SerialHandler : MonoBehaviour
 
     private SerialPort serialPort; // シリアルポートのインスタンス
 
-
-     // 無効化したいオブジェクトの参照を取得
-    public GameObject M5Stack;
-
     //M5Stackgaつながっているかのフラグ
-    public bool flag;
-
-    void Update()
-    {
-        // 対象のオブジェクトにアタッチされているスクリプトを取得
-        CutMove CutMove = M5Stack.GetComponent<CutMove>();
-
-        if(!flag)
-        {
-            CutMove.enabled = false;
-        }
-
-        if(flag)
-        {
-            CutMove.enabled = true;
-        }
-    }
+    public bool Settingsflag;
 
 
     // MonoBehaviourのAwakeメソッドはオブジェクトの初期化時に呼ばれます
@@ -102,13 +82,12 @@ public class SerialHandler : MonoBehaviour
             {
                 string message = serialPort.ReadLine(); // データを一行読み取る
                 OnDataReceived?.Invoke(message); // データ受信イベントを発火
-                flag = true;
+                Settingsflag = true;//つながっている
             }
             catch (System.Exception e)
             {
                 Debug.LogError("Error reading from serial port: " + e.Message); // エラーメッセージを表示
-                //Debug.Log("マウス操作に切り替えました");
-                flag = false;   
+                Settingsflag = false;//つながっていないのでマウスに切り替え
             }
         }
     }
