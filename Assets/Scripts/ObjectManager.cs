@@ -5,10 +5,11 @@ using UnityEngine;
 public class ObjectManager : MonoBehaviour
 {
     public GameObject prefab; // プレハブの参照
+    public GameObject alternatePrefab; // 別のプレハブの参照
     private int numObjects = 5; // オブジェクトの数
     private float zDistance = 20f; // Z軸の距離
-
-    int P=5;
+    private int P = 5;
+    private int alternatePrefabCounter = 0; // alternatePrefabカウンター
 
     void Start()
     {
@@ -22,11 +23,20 @@ public class ObjectManager : MonoBehaviour
     void Update()
     {
         // タグ付きオブジェクトを取得
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("grass");
+        GameObject[] grassObjects = GameObject.FindGameObjectsWithTag("grass");
+        GameObject[] moleObjects = GameObject.FindGameObjectsWithTag("Mole");
         List<GameObject> validObjects = new List<GameObject>();
 
         // 有効なオブジェクトをフィルタリング
-        foreach (var obj in objects)
+        foreach (var obj in grassObjects)
+        {
+            if (obj != null)
+            {
+                validObjects.Add(obj);
+            }
+        }
+
+        foreach (var obj in moleObjects)
         {
             if (obj != null)
             {
@@ -51,10 +61,28 @@ public class ObjectManager : MonoBehaviour
             // 新しいオブジェクトのスタート位置
             Vector3 startPosition = new Vector3(0, 14, maxZ + zDistance);
 
+            // 10回中1回ランダムな回数の場所に生成
+            int randomIndex = Random.Range(0, 10);
+
             // 新しいオブジェクトを生成
             for (int i = 0; i < numObjects; i++)
             {
-                Instantiate(prefab, startPosition + new Vector3(0, 0, i * zDistance), Quaternion.identity);
+                Vector3 position = startPosition + new Vector3(0, 0, i * zDistance);
+
+                // alternatePrefabが生成された後20個先までは生成しない
+                if (alternatePrefabCounter == 0 && P % 10 == randomIndex)
+                {
+                    Instantiate(alternatePrefab, position, Quaternion.identity);
+                    alternatePrefabCounter = 20; // 20個先まではalternatePrefabを生成しない
+                }
+                else
+                {
+                    Instantiate(prefab, position, Quaternion.identity);
+                    if (alternatePrefabCounter > 0)
+                    {
+                        alternatePrefabCounter--;
+                    }
+                }
                 P++;
             }
         }

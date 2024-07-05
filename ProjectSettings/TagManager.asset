@@ -7,6 +7,7 @@ TagManager:
   - Change
   - grass
   - bundle
+  - Mole
   layers:
   - Default
   - TransparentFX
