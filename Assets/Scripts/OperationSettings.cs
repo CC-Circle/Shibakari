@@ -17,7 +17,11 @@ public class OperationSettings : MonoBehaviour
     public GameObject M5Stack;
 
     //共通宣言
+    AudioSource audioSource;
 
+    void Start () {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -26,6 +30,14 @@ public class OperationSettings : MonoBehaviour
         {
             // オブジェクトを消すフラグを立てる
             objectToDestroy = collision.gameObject;
+        }
+
+         // 衝突したオブジェクトが "Mole" タグを持っているか確認
+        if (collision.gameObject.CompareTag("Mole"))
+        {
+            //スコアを減らす
+            Score-=500;
+            Destroy(collision.gameObject);
         }
     }
 
@@ -113,10 +125,12 @@ public class OperationSettings : MonoBehaviour
                 if (objectToDestroy != null)
                 {
                     //オブジェクトを消す
+                    audioSource.PlayOneShot(audioSource.clip);
                     Destroy(objectToDestroy);
                     objectToDestroy = null;
                     //スコアを増やす
                     Score+=100;
+                    
                 }
                 currentPosition.z += 10; // 前進させる
                 transform.position = currentPosition;
