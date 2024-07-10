@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    public GameObject prefab; // プレハブの参照
+    public GameObject Grass; // プレハブの参照
     public GameObject alternatePrefab; // 別のプレハブの参照
     private int numObjects = 5; // オブジェクトの数
-    private float zDistance = 20f; // Z軸の距離
-    private int P = 5;
-    private int alternatePrefabCounter = 0; // alternatePrefabカウンター
+    private float zDistance = 35f; // Z軸の距離
+    private int generationCounter = 0;
+    private int alternatePrefabCooldown = 0; // alternatePrefabカウンター
 
     void Start()
     {
         // 初期オブジェクトを生成
         for (int i = 0; i < numObjects; i++)
         {
-            Instantiate(prefab, new Vector3(0, 14, i * zDistance + 60), Quaternion.identity);
+            Instantiate(Grass, new Vector3(0, 13.5f, (i * zDistance) + 40), Quaternion.Euler(-90, 0, 0));
         }
     }
 
@@ -25,33 +25,16 @@ public class ObjectManager : MonoBehaviour
         // タグ付きオブジェクトを取得
         GameObject[] grassObjects = GameObject.FindGameObjectsWithTag("grass");
         GameObject[] moleObjects = GameObject.FindGameObjectsWithTag("Mole");
-        List<GameObject> validObjects = new List<GameObject>();
+        List<GameObject> validObjects = new List<GameObject>(grassObjects);
+        validObjects.AddRange(moleObjects);
 
-        // 有効なオブジェクトをフィルタリング
-        foreach (var obj in grassObjects)
-        {
-            if (obj != null)
-            {
-                validObjects.Add(obj);
-            }
-        }
-
-        foreach (var obj in moleObjects)
-        {
-            if (obj != null)
-            {
-                validObjects.Add(obj);
-            }
-        }
-
-        // オブジェクトが3個未満になった場合
-        if (validObjects.Count < 3)
+        // オブジェクトが2個以下になった場合
+        if (validObjects.Count <= 3)
         {
             // 現在の最大Z位置を取得
             float maxZ = 0;
             foreach (var obj in validObjects)
             {
-                Debug.Log(obj.transform.position.z);
                 if (obj.transform.position.z > maxZ)
                 {
                     maxZ = obj.transform.position.z;
@@ -59,31 +42,36 @@ public class ObjectManager : MonoBehaviour
             }
 
             // 新しいオブジェクトのスタート位置
-            Vector3 startPosition = new Vector3(0, 14, maxZ + zDistance);
+            Vector3 startPosition = new Vector3(0, 13.5f, maxZ + zDistance);
 
-            // 10回中1回ランダムな回数の場所に生成
+            // ランダムなインデックスを生成
             int randomIndex = Random.Range(0, 10);
 
             // 新しいオブジェクトを生成
             for (int i = 0; i < numObjects; i++)
             {
-                Vector3 position = startPosition + new Vector3(0, 0, i * zDistance);
-
                 // alternatePrefabが生成された後20個先までは生成しない
-                if (alternatePrefabCounter == 0 && P % 10 == randomIndex)
+                if (alternatePrefabCooldown == 0 && generationCounter % 10 == randomIndex)
                 {
+                    zDistance-=5;
+                    Debug.Log(zDistance);
+                    Vector3 position = startPosition + new Vector3(0, 0, i * zDistance);
                     Instantiate(alternatePrefab, position, Quaternion.identity);
-                    alternatePrefabCounter = 20; // 20個先まではalternatePrefabを生成しない
+                    alternatePrefabCooldown = 10; // 20個先まではalternatePrefabを生成しない
                 }
                 else
                 {
-                    Instantiate(prefab, position, Quaternion.identity);
-                    if (alternatePrefabCounter > 0)
+                    Vector3 position = startPosition + new Vector3(0, 0, i * zDistance);
+                    Instantiate(Grass, position, Quaternion.Euler(-90, 0, 0));
+                    if (alternatePrefabCooldown > 0)
                     {
-                        alternatePrefabCounter--;
+                        alternatePrefabCooldown--;
+                    }
+                    if(zDistance<30){
+                        zDistance = 35f;
                     }
                 }
-                P++;
+                generationCounter++;
             }
         }
     }
