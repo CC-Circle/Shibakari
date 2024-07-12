@@ -30,33 +30,31 @@ public class OperationSettings : MonoBehaviour
 
             if (serialReceive.Flag == 1)
             {
-                currentPosition.x = -20;
+                // Y軸-30度回転
+                    transform.rotation = Quaternion.Euler(0, -50, 0);
                 if (!wasLeft) // 前回が左でなければカウントを増加
                 {
                     leftRightCount++;
                     wasLeft = true;
                 }
-                // 新しい位置を設定
-                transform.position = currentPosition;
             }
-            else if (serialReceive.Flag == 2)//マウス操作用
+            else if (serialReceive.Flag == 2) // マウス操作用
             {
-                currentPosition.x = 20;
+                // Y軸30度回転
+                    transform.rotation = Quaternion.Euler(0, 50, 0);
                 if (wasLeft) // 前回が左だったらカウントを増加
                 {
                     leftRightCount++;
                     wasLeft = false;
                 }
-                // 新しい位置を設定
-                transform.position = currentPosition;
             }
             else
             {
                 // x値だけをリセットした位置を取得
                 currentPosition.x = 0;
-                // 新しい位置を設定
-                transform.position = currentPosition;
+                transform.rotation = Quaternion.Euler(0, 0, 0);
             }
+
 
 
         }else if(!SerialHandler.Settingsflag){
@@ -68,18 +66,20 @@ public class OperationSettings : MonoBehaviour
 
             if (mouseX < 0.4f)
             {
-                currentPosition.x = -20;
                 if (!wasLeft) // 前回が左でなければカウントを増加
                 {
+                    // Y軸-30度回転
+                    transform.rotation = Quaternion.Euler(0, -50, 0);
                     leftRightCount++;
                     wasLeft = true;
                 }
             }
             else if (mouseX > 0.6f)
             {
-                currentPosition.x = +20;
                 if (wasLeft) // 前回が左だったらカウントを増加
                 {
+                    // Y軸30度回転
+                    transform.rotation = Quaternion.Euler(0, 50, 0);
                     leftRightCount++;
                     wasLeft = false;
                 }
@@ -88,10 +88,8 @@ public class OperationSettings : MonoBehaviour
             {
                 // x値だけをリセットした位置を取得
                 currentPosition.x = 0;
+                transform.rotation = Quaternion.Euler(0, 0, 0);
             }
-
-            // 新しい位置を設定
-            transform.position = currentPosition;
         }
 
         // 左右に一回ずつ振ったら前進

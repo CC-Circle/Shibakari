@@ -17,6 +17,8 @@ public class CollisionDetection : MonoBehaviour
 
     AudioSource audioSource; // オーディオを格納する変数
 
+    public GameObject newPrefab; // 新しいオブジェクトのプレハブ
+
     // 衝突した時に呼ばれる関数
     void OnCollisionEnter(Collision collision)
     {
@@ -57,9 +59,17 @@ public class CollisionDetection : MonoBehaviour
             // 草を消すフラグが立っている場合、オブジェクトを消す
             if (Grassbject != null)
             {
+                Vector3 position = Grassbject.transform.position; // オブジェクトの位置を取得
+                position.y = 0; // Y軸の位置を0に固定
                 Destroy(Grassbject); // 草を消す
                 audioSource.PlayOneShot(audioSource.clip); // オーディオを再生
                 ScoreFlag = 1; // スコアフラグを立てる
+
+                // 新しいオブジェクトを元の位置に生成
+                Instantiate(newPrefab, position, Quaternion.Euler(90, 0, 0));
+                position.x -= 5; // Y軸の位置を0に固定
+                position.z -= 5; // Y軸の位置を0に固定
+                Instantiate(newPrefab, position, Quaternion.Euler(90, 0, 0));
             }
 
             // モグラを消すフラグが立っている場合、オブジェクトを消す
