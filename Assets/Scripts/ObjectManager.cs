@@ -31,8 +31,6 @@ public class ObjectManager : MonoBehaviour
         {
             Instantiate(Grass, new Vector3(0, 13.5f, (i * zDistance) + 40), Quaternion.Euler(-90, 0, 0));
         }
-
-        
     }
 
     void Update()
