@@ -2,27 +2,78 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WriteScore : MonoBehaviour
 {
-    GameObject Shibakari; //Shibakariそのものが入る変数
+    //共通宣言
+    private string nowScene; // シーンを格納する変数
+    public CollisionDetection collisionDetection; // Inspectorでセットするか、動的に取得
+    public static int score,Score; // スコアの変数
+    public TextMeshProUGUI scoreText;//スコアを入れるテキスト
 
-    OperationSettings OperationSettings; //CutMoveが入る変数
+    //リザルト用
+    public bool flag=false;
 
-    public TextMeshProUGUI Score;
-
-
-    void Start () {
-        Shibakari = GameObject.Find ("Shibakari"); //Shibakariをオブジェクトの名前から取得して変数に格納する
-        OperationSettings = Shibakari.GetComponent<OperationSettings>(); //Shibakariの中にあるCutMoveを取得して変数に格納する
+    void Start()
+    {
+        nowScene = SceneManager.GetActiveScene().name; // 現在のシーン名を変数に代入
+        // コリジョンデテクションスクリプトを動的に取得
+        GameObject cylinder = GameObject.Find("円柱"); // 円柱オブジェクトを探す
+        if (cylinder != null)
+        {
+            collisionDetection = cylinder.GetComponent<CollisionDetection>(); // 付いているスクリプトを取得
+        }
+        else
+        {
+            Debug.LogError("円柱オブジェクトが見つかりません。");
+        }
     }
 
-    void Update () {
-        //単位をつけて代入
-        if(OperationSettings.Score<1000){
-            Score.text = Mathf.FloorToInt(OperationSettings.Score).ToString("F0") + "g";
-        }else{
-            Score.text = (OperationSettings.Score / 1000f).ToString("F1") + "kg";
+    void Update()
+    {
+        if (nowScene == "main")
+        {
+            if (collisionDetection != null && collisionDetection.ScoreFlag == 1)
+            {
+                score += 100;
+                Score = score;
+                collisionDetection.ScoreFlag = 0; // フラグをリセット（必要に応じて）
+            }
+             if (collisionDetection != null && collisionDetection.ScoreFlag == 2)
+            {
+                score -= 500;
+                Score = score;
+                collisionDetection.ScoreFlag = 0; // フラグをリセット（必要に応じて）
+            }
+        }
+        else if (nowScene == "end")
+        {
+            if(flag == false){
+                flag=true;
+                Score = 0;
+            }
+            // リザルトの処理
+            if (collisionDetection != null && collisionDetection.ScoreFlag == 1)
+            {
+                Score += 100;
+                collisionDetection.ScoreFlag = 0; // フラグをリセット（必要に応じて）
+            }
+        }
+
+
+        // スコアの表示更新
+        if (scoreText != null)
+        {
+            if (Score < 1000)
+            {
+                scoreText.text = Mathf.FloorToInt(Score).ToString("F0") + "g";
+            }
+            else
+            {
+                scoreText.text = (Score / 1000f).ToString("F1") + "kg";
+            }
         }
     }
 }
+

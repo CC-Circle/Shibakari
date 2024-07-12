@@ -352,6 +352,7 @@ GameObject:
   - component: {fileID: 497153505}
   - component: {fileID: 497153507}
   - component: {fileID: 497153506}
+  - component: {fileID: 497153508}
   m_Layer: 5
   m_Name: SCORE
   m_TagString: Untagged
@@ -475,6 +476,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 497153504}
   m_CullTransparentMesh: 1
+--- !u!114 &497153508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497153504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf5989a1fdf6415f9cdb4bd90688992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionDetection: {fileID: 1289590435}
+  scoreText: {fileID: 497153506}
+  flag: 0
 --- !u!1 &992528684
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,6 +625,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 992528684}
   m_CullTransparentMesh: 1
+--- !u!1 &1047935543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1047935545}
+  - component: {fileID: 1047935544}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1047935544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047935543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1689c57287a394200afbb5eaef0e729c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Grass: {fileID: 0}
+  alternatePrefab: {fileID: 0}
+  grass: {fileID: 6242676412781566749, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
+  tagToAssign: grass
+  grassObject: {fileID: 1365504373386088905}
+--- !u!4 &1047935545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047935543}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.278144, z: 0.000016212463}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1157101327
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,7 +829,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f442d215fb24d4efd8066182cfaff3b6, type: 2}
+  - {fileID: 2100000, guid: 614c0961859064814a91ba61cf52207e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -818,15 +883,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1289590430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abd8685ae12fd4a5f80a494d483eb306, type: 3}
+  m_Script: {fileID: 11500000, guid: 20648012f3d43428e9d267fd155ec137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Flag: 0
-  COUNT: 0
-  grass: {fileID: 2095962475511360111, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
-  tagToAssign: grass
-  Score: {fileID: 497153506}
-  SceneManager: {fileID: 53226257}
+  ScoreFlag: 0
 --- !u!1 &1446627003
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,7 +1082,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &6153161078561175934
+--- !u!1001 &1365504373386088904
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1030,55 +1090,80 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2095962475511360111, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
-      propertyPath: m_Name
-      value: grass
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5309262093445429244, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    - target: {fileID: 4900436311947768901, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6242676412781566749, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
+      propertyPath: m_Name
+      value: Grass
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6149760359d494f4fb6492a7277edad6, type: 3}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6242676412781566749, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1365504373386088906}
+  m_SourcePrefab: {fileID: 100100000, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
+--- !u!1 &1365504373386088905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6242676412781566749, guid: fe574aa1e5e2146d9b6b16b7cfad510d, type: 3}
+  m_PrefabInstance: {fileID: 1365504373386088904}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1365504373386088906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365504373386088905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1689c57287a394200afbb5eaef0e729c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Grass: {fileID: 0}
+  alternatePrefab: {fileID: 0}
+  grass: {fileID: 0}
+  tagToAssign: grass
+  grassObject: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1089,5 +1174,6 @@ SceneRoots:
   - {fileID: 103934484}
   - {fileID: 123795058}
   - {fileID: 1289590434}
-  - {fileID: 6153161078561175934}
+  - {fileID: 1365504373386088904}
   - {fileID: 53226258}
+  - {fileID: 1047935545}

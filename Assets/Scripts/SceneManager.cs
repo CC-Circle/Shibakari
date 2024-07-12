@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement; // Unityのシーン管理名前空間をイ�
 
 public class MySceneManager : MonoBehaviour
 {
+    //シーンチェンジスクリプト
     private string NowScene; // クラスレベルで変数を宣言
-
     public bool flag;
 
     // Updateは毎フレーム呼び出される
@@ -30,13 +30,13 @@ public class MySceneManager : MonoBehaviour
                 SceneManager.LoadScene("end"); // シーンを"end"に変更
             }
         }
-        else if(NowScene == "end")
-        {
-            if(flag)
-            {
-                flag=false;
-                SceneManager.LoadScene("start"); // シーンを"start"に変更
-            }
-        }
+        // else if(NowScene == "end")
+        // {
+        //     if(flag)
+        //     {
+        //         flag=false;
+        //         SceneManager.LoadScene("start"); // シーンを"start"に変更
+        //     }
+        // }
     }
 }

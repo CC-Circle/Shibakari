@@ -12,34 +12,8 @@ public class OperationSettings : MonoBehaviour
     public SerialReceive serialReceive; // Inspectorでセットするか、動的に取得
     private int leftRightCount = 0; // 左右の振りカウント
     private bool wasLeft = false; // 前回が左だったか
-    private GameObject objectToDestroy = null;//草に触れたかどうかの判定フラグ
-    public static int Score;//スコアの変数
     public GameObject M5Stack;
 
-    //共通宣言
-    AudioSource audioSource;
-
-    void Start () {
-        audioSource = GetComponent<AudioSource>();
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        // 衝突したオブジェクトが "grass" タグを持っているか確認
-        if (collision.gameObject.CompareTag("grass"))
-        {
-            // オブジェクトを消すフラグを立てる
-            objectToDestroy = collision.gameObject;
-        }
-
-         // 衝突したオブジェクトが "Mole" タグを持っているか確認
-        if (collision.gameObject.CompareTag("Mole"))
-        {
-            //スコアを減らす
-            Score-=500;
-            Destroy(collision.gameObject);
-        }
-    }
 
     // Update is called once per frame
     void Update()
@@ -62,6 +36,8 @@ public class OperationSettings : MonoBehaviour
                     leftRightCount++;
                     wasLeft = true;
                 }
+                // 新しい位置を設定
+                transform.position = currentPosition;
             }
             else if (serialReceive.Flag == 2)//マウス操作用
             {
@@ -71,16 +47,16 @@ public class OperationSettings : MonoBehaviour
                     leftRightCount++;
                     wasLeft = false;
                 }
+                // 新しい位置を設定
+                transform.position = currentPosition;
             }
             else
             {
                 // x値だけをリセットした位置を取得
                 currentPosition.x = 0;
+                // 新しい位置を設定
+                transform.position = currentPosition;
             }
-
-            // 新しい位置を設定
-            transform.position = currentPosition;
-
 
 
         }else if(!SerialHandler.Settingsflag){
@@ -119,22 +95,11 @@ public class OperationSettings : MonoBehaviour
         }
 
         // 左右に一回ずつ振ったら前進
-            if (leftRightCount >= 2)
-            {
-                // フラグが立っている場合、オブジェクトを消す
-                if (objectToDestroy != null)
-                {
-                    //オブジェクトを消す
-                    audioSource.PlayOneShot(audioSource.clip);
-                    Destroy(objectToDestroy);
-                    objectToDestroy = null;
-                    //スコアを増やす
-                    Score+=100;
-                    
-                }
-                currentPosition.z += 10; // 前進させる
-                transform.position = currentPosition;
-                leftRightCount = 0; // カウントをリセット
-            }
+        if (leftRightCount >= 2)
+        {
+            currentPosition.z += 10; // 前進させる
+            transform.position = currentPosition;
+            leftRightCount = 0; // カウントをリセット
+        }
     }
 }

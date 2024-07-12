@@ -69,13 +69,18 @@ public class SerialReceive : MonoBehaviour
                 //Debug.Log($"Received accel data: X:{accX}, Y:{accY}, Z:{accZ}");
 
                 // 移動のためのフラッグ
-                if (accX > 1f) {
+                if(accX > 1f)
+                {
                     // 右
                     Flag=1;
-                } else if(accX < -1f) {
+                }
+                else if(accX < -1f)
+                {
                     // 左
                     Flag=2;
-                } else {
+                }
+                else
+                {
                     // 真ん中
                     Flag=0;
                 }
