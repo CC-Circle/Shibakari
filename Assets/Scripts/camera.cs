@@ -6,6 +6,7 @@ public class CameraSample : MonoBehaviour {
     private GameObject player;   // プレイヤー情報格納用
     private Vector3 offset;      // 相対距離取得用
  
+ 
     // Use this for initialization
     void Start () {
         // Shibakariの情報を取得
