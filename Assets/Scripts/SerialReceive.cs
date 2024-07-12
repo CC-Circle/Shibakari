@@ -79,11 +79,18 @@ public class SerialReceive : MonoBehaviour
                     // 左
                     Flag=2;
                 }
+                else if(accY > 0.5)
+                {
+                    // 上
+                    Flag=3;
+                }
                 else
                 {
                     // 真ん中
                     Flag=0;
                 }
+                // Debug.Logへの表示
+                // Debug.Log(Flag);
             }
             else
             {
