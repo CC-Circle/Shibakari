@@ -46,6 +46,16 @@ public class CollisionDetection : MonoBehaviour
     // 毎フレーム呼ばれる関数
     void Update()
     {
+        //Flagを入手するためのコード
+        SerialReceive SerialReceive; //呼ぶスクリプトにあだなつける
+        GameObject M5Stack = GameObject.Find("M5stack_Evnet"); //Playerっていうオブジェクトを探す
+        SerialReceive = M5Stack.GetComponent<SerialReceive>(); //付いているスクリプトを取得
+
+        //上方向を判定した時に，デバッグログに表示
+        if(SerialReceive.Flag == 3) {
+            Debug.Log("up");
+        }
+        
         NowScene = SceneManager.GetActiveScene().name; // 現在のシーン名を変数に代入
 
         // 現在のシーンが "start" の場合
