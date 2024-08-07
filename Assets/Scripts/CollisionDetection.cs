@@ -52,10 +52,11 @@ public class CollisionDetection : MonoBehaviour
         SerialReceive = M5Stack.GetComponent<SerialReceive>(); //付いているスクリプトを取得
 
         //上方向を判定した時に，デバッグログに表示
-        if(SerialReceive.Flag == 3) {
+        if (SerialReceive.Flag == 3)
+        {
             Debug.Log("up");
         }
-        
+
         NowScene = SceneManager.GetActiveScene().name; // 現在のシーン名を変数に代入
 
         // 現在のシーンが "start" の場合
@@ -80,6 +81,14 @@ public class CollisionDetection : MonoBehaviour
                 position.x -= 5; // Y軸の位置を0に固定
                 position.z -= 5; // Y軸の位置を0に固定
                 Instantiate(newPrefab, position, Quaternion.Euler(90, 0, 0));
+                // 生成したオブジェクトにタグを追加
+                newPrefab.tag = "AfterGrass";
+                // 生成したオブジェクトにAutoDestroyAndSpawnスクリプトを追加
+                if (newPrefab.GetComponent<AutoDestroyAndSpawn>() == null)
+                {
+                    AutoDestroyAndSpawn autoDestroy = newPrefab.AddComponent<AutoDestroyAndSpawn>();
+                    autoDestroy.lifetime = 5f; // 5秒後に破壊されるように設定
+                }
             }
 
             // モグラを消すフラグが立っている場合、オブジェクトを消す

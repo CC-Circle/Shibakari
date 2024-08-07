@@ -8,6 +8,7 @@ TagManager:
   - grass
   - bundle
   - Mole
+  - AfterGrass
   layers:
   - Default
   - TransparentFX
