@@ -9,6 +9,7 @@ TagManager:
   - bundle
   - Mole
   - AfterGrass
+  - UI
   layers:
   - Default
   - TransparentFX
