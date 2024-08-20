@@ -26,19 +26,20 @@ public class TimeCounter : MonoBehaviour
         mySceneManager = SceneManager.GetComponent<MySceneManager>(); // SceneManagerオブジェクトにアタッチされているMySceneManagerスクリプトを取得
         UiElements = GameObject.FindGameObjectsWithTag("UI");
         FinishText.SetActive(false); // ゲーム終了時に表示するテキストを非表示
-
-
     }
 
     // Updateは毎フレーム呼び出される
     void Update()
     {
-        // 時間を減らす
-        CountTime -= Time.deltaTime;
-        // 小数点以下を非表示にして時間をテキストに表示
-        uiText.text = Mathf.FloorToInt(CountTime).ToString("F0");
-        // FillのFillAmountを時間に応じて変化
-        uiFill.fillAmount = Mathf.InverseLerp(0, 40, CountTime);
+        if (ReadyToStart.flag)
+        {
+            // 時間を減らす
+            CountTime -= Time.deltaTime;
+            // 小数点以下を非表示にして時間をテキストに表示
+            uiText.text = Mathf.FloorToInt(CountTime).ToString("F0");
+            // FillのFillAmountを時間に応じて変化
+            uiFill.fillAmount = Mathf.InverseLerp(0, 40, CountTime);
+        }
 
         //　処理1と処理2の順番を変更しないでください
         //　処理1
@@ -71,8 +72,8 @@ public class TimeCounter : MonoBehaviour
             FinishText.SetActive(true); // ゲーム終了時に表示するテキストを表示
             FinishSound = GetComponent<AudioSource>(); // ゲーム終了時に再生するサウンドを取得
             FinishSound.Play(); // ゲーム終了時にサウンドを再生
+
+
         }
-
-
     }
 }
