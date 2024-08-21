@@ -15,70 +15,84 @@ public class OperationSettings : MonoBehaviour
 
     void Update()
     {
-        SerialHandler SerialHandler;
-        GameObject M5Stack = GameObject.Find("M5stack_Evnet");
-        SerialHandler = M5Stack.GetComponent<SerialHandler>();
-
-        Vector3 currentPosition = transform.position;
-
-        float rotationSpeed = 90f; // 回転速度
-        float moveAmount = 5f * Time.deltaTime;
-
-        if (SerialHandler.Settingsflag)
-        { 
-            if (serialReceive.Flag == 1)
-            {
-                transform.rotation = Quaternion.Euler(0, -50, 0);
-                if (!wasLeft)
-                {
-                    leftRightCount++;
-                    wasLeft = true;
-                }
-            }
-            else if (serialReceive.Flag == 2)
-            {
-                transform.rotation = Quaternion.Euler(0, 50, 0);
-                if (wasLeft)
-                {
-                    leftRightCount++;
-                    wasLeft = false;
-                }
-            }
-            else
-            {
-                currentPosition.x = 0;
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-            }
-        }
-        else if (!SerialHandler.Settingsflag)
+        if (ReadyToStart.flag)
         {
-            Vector3 mouseViewportPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-            float mouseX = mouseViewportPosition.x;
+            //Flagを入手するためのコード
+            SerialHandler SerialHandler; //呼ぶスクリプトにあだなつける
+            GameObject M5Stack = GameObject.Find("M5stack_Evnet"); //Playerっていうオブジェクトを探す
+            SerialHandler = M5Stack.GetComponent<SerialHandler>(); //付いているスクリプトを取得
 
-            if (mouseX < 0.4f)
-            {
-                if (!wasLeft)
+            // 現在の位置を取得
+            Vector3 currentPosition = transform.position;
+
+            if (SerialHandler.Settingsflag)
+            {//M5Stack操作
+
+                if (serialReceive.Flag == 1)
                 {
+                    // Y軸-30度回転
                     transform.rotation = Quaternion.Euler(0, -50, 0);
-                    leftRightCount++;
-                    wasLeft = true;
+                    if (!wasLeft) // 前回が左でなければカウントを増加
+                    {
+                        leftRightCount++;
+                        wasLeft = true;
+                    }
                 }
-            }
-            else if (mouseX > 0.6f)
-            {
-                if (wasLeft)
+                else if (serialReceive.Flag == 2) // マウス操作用
                 {
+                    // Y軸30度回転
                     transform.rotation = Quaternion.Euler(0, 50, 0);
-                    leftRightCount++;
-                    wasLeft = false;
+                    if (wasLeft) // 前回が左だったらカウントを増加
+                    {
+                        leftRightCount++;
+                        wasLeft = false;
+                    }
+                }
+                else
+                {
+                    // x値だけをリセットした位置を取得
+                    currentPosition.x = 0;
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+
+
+
+            }
+            else if (!SerialHandler.Settingsflag)
+            {
+                // マウスのビューポート座標を取得 (0.0から1.0の範囲)
+                Vector3 mouseViewportPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+
+                // ビューポートのx座標に基づいて判断
+                float mouseX = mouseViewportPosition.x;
+
+                if (mouseX < 0.4f)
+                {
+                    if (!wasLeft) // 前回が左でなければカウントを増加
+                    {
+                        // Y軸-30度回転
+                        transform.rotation = Quaternion.Euler(0, -50, 0);
+                        leftRightCount++;
+                        wasLeft = true;
+                    }
+                }
+                else if (mouseX > 0.6f)
+                {
+                    if (wasLeft) // 前回が左だったらカウントを増加
+                    {
+                        // Y軸30度回転
+                        transform.rotation = Quaternion.Euler(0, 50, 0);
+                        leftRightCount++;
+                        wasLeft = false;
+                    }
+                }
+                else
+                {
+                    // x値だけをリセットした位置を取得
+                    currentPosition.x = 0;
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
             }
-            else
-            {
-                currentPosition.x = 0;
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-            }
-        }
 
         // 前後移動
         if (leftRightCount >= 2)
