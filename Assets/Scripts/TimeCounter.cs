@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement; // シーン管理の名前空間
 public class TimeCounter : MonoBehaviour
 {
     public float CountTime = 40; // カウントダウンの秒数を設定
-    [SerializeField] private Image uiFill;
+    //[SerializeField] private Image uiFill;
     [SerializeField] private TextMeshProUGUI uiText;
 
     public GameObject SceneManager; // シーンマネージャーのゲームオブジェクト
@@ -28,7 +28,7 @@ public class TimeCounter : MonoBehaviour
         // 小数点以下を非表示にして時間をテキストに表示
         uiText.text = Mathf.FloorToInt(CountTime).ToString("F0");
         // FillのFillAmountを時間に応じて変化
-        uiFill.fillAmount = Mathf.InverseLerp(0, 40, CountTime);
+        //uiFill.fillAmount = Mathf.InverseLerp(0, 40, CountTime);
 
         if (CountTime <= 0) // カウントが0になったら
         {

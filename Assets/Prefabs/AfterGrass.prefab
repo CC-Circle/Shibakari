@@ -97,4 +97,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 5
-  spawnPrefab: {fileID: 2527857454293643736, guid: b43bad4768d95495482cc752d8dd43d6, type: 3}
+  spawnPrefab_grass: {fileID: 3934356072360846589}
+  spawnPrefab_mogura: {fileID: 1251585629225253175, guid: bbd4050c86fb34407a30ba331166ed3e, type: 3}

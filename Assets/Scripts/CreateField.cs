@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class GrassManager : MonoBehaviour
 {
-    public Transform blockParent;
+    public Transform blockParent_Grass;
+    public Transform blockParent_Mole;
+
+    [Header("草")]
     public GameObject blockPrefab_Grass;
+
+    [Header("もぐら")]
+    public GameObject blockPrefab_Mole;
 
     public const int MAP_WIDTH = 500;
     public const int MAP_HEIGHT = 500;
@@ -27,13 +33,16 @@ public class GrassManager : MonoBehaviour
                 pos.z += j;
 
                 GameObject obj;
-                obj = Instantiate(blockPrefab_Grass, blockParent);
-                obj.transform.position = pos;
+
+                if(Random.Range(1, 100) <= 2){
+                    obj = Instantiate(blockPrefab_Mole, blockParent_Grass);
+                    obj.transform.position = pos;
+                }else{
+                    obj = Instantiate(blockPrefab_Grass, blockParent_Mole);
+                    pos.y-=2;
+                    obj.transform.position = pos;
+                }
             }
         }
-    }
-
-    void Update()
-    {
     }
 }
