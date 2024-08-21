@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OperationSettings : MonoBehaviour
 {
-    public float moveSpeed = 0.001f;
+    public float moveSpeed = 70f;
     public GameObject mainCamera;
     public SerialReceive serialReceive;
     private int leftRightCount = 0;
@@ -12,6 +12,13 @@ public class OperationSettings : MonoBehaviour
     public GameObject M5Stack;
     private float currentRotationY = 0f;
     public float distanceFromCamera = 5f; // カメラからの距離
+    private Vector3 lastMousePosition;
+
+    void Start()
+    {
+        // 初期化時にマウスの位置を保存
+        lastMousePosition = Input.mousePosition;
+    }
 
     void Update()
     {
@@ -22,11 +29,12 @@ public class OperationSettings : MonoBehaviour
             GameObject M5Stack = GameObject.Find("M5stack_Evnet"); //Playerっていうオブジェクトを探す
             SerialHandler = M5Stack.GetComponent<SerialHandler>(); //付いているスクリプトを取得
 
-            float rotationSpeed = 90f; // 回転速度
+            float rotationSpeed = 0.1f; // 回転速度
             float moveAmount = 5f * Time.deltaTime;
-            
+
             // 現在の位置を取得
             Vector3 currentPosition = transform.position;
+
 
             if (SerialHandler.Settingsflag)
             { //M5Stack操作
@@ -60,67 +68,27 @@ public class OperationSettings : MonoBehaviour
             }
             else if (!SerialHandler.Settingsflag)
             {
-                // マウスのビューポート座標を取得 (0.0から1.0の範囲)
-                Vector3 mouseViewportPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+                // 十字キーでの進行方向変更（回転）
+                float h = Input.GetAxis("Horizontal"); // 左右キーの取得
+                transform.Rotate(0, rotationSpeed * h * 25, 0);
 
-                // ビューポートのx座標に基づいて判断
-                float mouseX = mouseViewportPosition.x;
+                // マウスのX方向の移動距離を計算
+                Vector3 currentMousePosition = Input.mousePosition;
+                float mouseDeltaX = currentMousePosition.x - lastMousePosition.x;
 
-                if (mouseX < 0.4f)
+                // マウスの移動に応じてプレイヤーを回転
+                transform.Rotate(0, mouseDeltaX * rotationSpeed, 0);
+
+                // マウスの移動距離に応じて前進
+                if (Mathf.Abs(mouseDeltaX) > 0)
                 {
-                    if (!wasLeft) // 前回が左でなければカウントを増加
-                    {
-                        // Y軸-30度回転
-                        transform.rotation = Quaternion.Euler(0, -50, 0);
-                        leftRightCount++;
-                        wasLeft = true;
-                    }
+                    transform.position += transform.forward * Mathf.Abs(mouseDeltaX) * moveSpeed * 10;
+                    // 高さは固定
+                    transform.position = new Vector3(transform.position.x, 30, transform.position.z);
                 }
-                else if (mouseX > 0.6f)
-                {
-                    if (wasLeft) // 前回が左だったらカウントを増加
-                    {
-                        // Y軸30度回転
-                        transform.rotation = Quaternion.Euler(0, 50, 0);
-                        leftRightCount++;
-                        wasLeft = false;
-                    }
-                }
-                else
-                {
-                    // x値だけをリセットした位置を取得
-                    currentPosition.x = 0;
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
-                }
-            }
 
-            // 前後移動
-            if (leftRightCount >= 2)
-            {
-                currentPosition.z += 10;
-                transform.position = currentPosition;
-                leftRightCount = 0;
-            }
-
-            // 左右移動と回転
-            if (Input.GetKey(KeyCode.A))
-            {
-                // 左に移動
-                currentRotationY += rotationSpeed * Time.deltaTime;
-                transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-                // カメラも回転
-                mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-                mainCamera.transform.Translate(Vector3.left * moveAmount);
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                // 右に移動
-                currentRotationY -= rotationSpeed * Time.deltaTime;
-                transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-                // カメラも回転
-                mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-                mainCamera.transform.Translate(Vector3.right * moveAmount);
+                // 現在のマウス位置を次のフレーム用に保存
+                lastMousePosition = currentMousePosition;
             }
         }
     }
