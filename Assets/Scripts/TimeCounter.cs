@@ -11,7 +11,7 @@ using System.Media; // シーン管理の名前空間
 public class TimeCounter : MonoBehaviour
 {
     public float CountTime = 40; // カウントダウンの秒数を設定
-    [SerializeField] private Image uiFill;
+    //[SerializeField] private Image uiFill;
     [SerializeField] private TextMeshProUGUI uiText;
     public GameObject SceneManager; // シーンマネージャーのゲームオブジェクト
     private MySceneManager mySceneManager; // シーンマネージャースクリプトのインスタンス
