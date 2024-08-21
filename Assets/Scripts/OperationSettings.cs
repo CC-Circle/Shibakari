@@ -22,11 +22,14 @@ public class OperationSettings : MonoBehaviour
             GameObject M5Stack = GameObject.Find("M5stack_Evnet"); //Playerっていうオブジェクトを探す
             SerialHandler = M5Stack.GetComponent<SerialHandler>(); //付いているスクリプトを取得
 
+            float rotationSpeed = 90f; // 回転速度
+            float moveAmount = 5f * Time.deltaTime;
+            
             // 現在の位置を取得
             Vector3 currentPosition = transform.position;
 
             if (SerialHandler.Settingsflag)
-            {//M5Stack操作
+            { //M5Stack操作
 
                 if (serialReceive.Flag == 1)
                 {
@@ -54,9 +57,6 @@ public class OperationSettings : MonoBehaviour
                     currentPosition.x = 0;
                     transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
-
-
-
             }
             else if (!SerialHandler.Settingsflag)
             {
@@ -94,33 +94,34 @@ public class OperationSettings : MonoBehaviour
                 }
             }
 
-        // 前後移動
-        if (leftRightCount >= 2)
-        {
-            currentPosition.z += 10;
-            transform.position = currentPosition;
-            leftRightCount = 0;
-        }
+            // 前後移動
+            if (leftRightCount >= 2)
+            {
+                currentPosition.z += 10;
+                transform.position = currentPosition;
+                leftRightCount = 0;
+            }
 
-        // 左右移動と回転
-        if (Input.GetKey(KeyCode.A))
-        {
-            // 左に移動
-            currentRotationY += rotationSpeed * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-            // カメラも回転
-            mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-            mainCamera.transform.Translate(Vector3.left * moveAmount);
-        }
+            // 左右移動と回転
+            if (Input.GetKey(KeyCode.A))
+            {
+                // 左に移動
+                currentRotationY += rotationSpeed * Time.deltaTime;
+                transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
+                // カメラも回転
+                mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
+                mainCamera.transform.Translate(Vector3.left * moveAmount);
+            }
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            // 右に移動
-            currentRotationY -= rotationSpeed * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-            // カメラも回転
-            mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-            mainCamera.transform.Translate(Vector3.right * moveAmount);
+            if (Input.GetKey(KeyCode.D))
+            {
+                // 右に移動
+                currentRotationY -= rotationSpeed * Time.deltaTime;
+                transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
+                // カメラも回転
+                mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
+                mainCamera.transform.Translate(Vector3.right * moveAmount);
+            }
         }
     }
 }
