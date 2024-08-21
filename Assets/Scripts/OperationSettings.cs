@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class OperationSettings : MonoBehaviour
 {
-    //マウス用の宣言
     public float moveSpeed = 0.001f;
-
-
-    //M5Stack用の宣言
-    public SerialReceive serialReceive; // Inspectorでセットするか、動的に取得
-    private int leftRightCount = 0; // 左右の振りカウント
-    private bool wasLeft = false; // 前回が左だったか
+    public GameObject mainCamera;
+    public SerialReceive serialReceive;
+    private int leftRightCount = 0;
+    private bool wasLeft = false;
     public GameObject M5Stack;
+    private float currentRotationY = 0f;
+    public float distanceFromCamera = 5f; // カメラからの距離
 
-
-    // Update is called once per frame
     void Update()
     {
         if (ReadyToStart.flag)
@@ -97,13 +94,33 @@ public class OperationSettings : MonoBehaviour
                 }
             }
 
-            // 左右に一回ずつ振ったら前進
-            if (leftRightCount >= 2)
-            {
-                currentPosition.z += 10; // 前進させる
-                transform.position = currentPosition;
-                leftRightCount = 0; // カウントをリセット
-            }
+        // 前後移動
+        if (leftRightCount >= 2)
+        {
+            currentPosition.z += 10;
+            transform.position = currentPosition;
+            leftRightCount = 0;
+        }
+
+        // 左右移動と回転
+        if (Input.GetKey(KeyCode.A))
+        {
+            // 左に移動
+            currentRotationY += rotationSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
+            // カメラも回転
+            mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
+            mainCamera.transform.Translate(Vector3.left * moveAmount);
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            // 右に移動
+            currentRotationY -= rotationSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
+            // カメラも回転
+            mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
+            mainCamera.transform.Translate(Vector3.right * moveAmount);
         }
     }
 }
