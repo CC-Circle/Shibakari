@@ -9,8 +9,12 @@ public class OperationSettings : MonoBehaviour
     public SerialReceive serialReceive;
     private int leftRightCount = 0;
     private bool wasLeft = false;
+    private bool isSwinging = false; // 振り回し動作のフラグ
+    private float swingDirection = 0; // 現在の振り回し方向
+    private float swingAmount = 30f; // 振り回しの角度
+    private float swingSpeed = 50f; // 振り回しの速度
+    private float swingTime = 0; // 振り回しの経過時間
     public GameObject M5Stack;
-    private float currentRotationY = 0f;
     public float distanceFromCamera = 5f; // カメラからの距離
     private Vector3 lastMousePosition;
 
@@ -22,48 +26,69 @@ public class OperationSettings : MonoBehaviour
 
     void Update()
     {
+        bool isRotating = false; // 視点操作が実行されているかどうかを判定するフラグ
+
         if (ReadyToStart.flag)
         {
-            //Flagを入手するためのコード
-            SerialHandler SerialHandler; //呼ぶスクリプトにあだなつける
-            GameObject M5Stack = GameObject.Find("M5stack_Evnet"); //Playerっていうオブジェクトを探す
-            SerialHandler = M5Stack.GetComponent<SerialHandler>(); //付いているスクリプトを取得
+            // Flagを入手するためのコード
+            SerialHandler SerialHandler;
+            GameObject M5Stack = GameObject.Find("M5stack_Evnet");
+            SerialHandler = M5Stack.GetComponent<SerialHandler>();
 
-            float rotationSpeed = 0.1f; // 回転速度
-            float moveAmount = 5f * Time.deltaTime;
+            // ジャイロを入手するためのコード
+            SerialReceive SerialReceive;
+            SerialReceive = M5Stack.GetComponent<SerialReceive>();
+
+            float rotationSpeed = 10f; // 回転速度
+            float moveAmount = 1f * Time.deltaTime;
 
             // 現在の位置を取得
             Vector3 currentPosition = transform.position;
 
-
+            // M5Stack
             if (SerialHandler.Settingsflag)
-            { //M5Stack操作
+            {
+                // 視点操作
+                float pitch = SerialReceive.pitch;
+                if (Mathf.Abs(pitch) > 40) {
+                    float rotation = pitch * rotationSpeed * Time.deltaTime;
+                    transform.Rotate(0, rotation, 0);  // 継続的に回転
+                    isRotating = true;
+                }
 
-                if (serialReceive.Flag == 1)
+                // 視点操作が実行されていない場合のみ刈り操作を行う
+                if (!isRotating) 
                 {
-                    // Y軸-30度回転
-                    transform.rotation = Quaternion.Euler(0, -50, 0);
-                    if (!wasLeft) // 前回が左でなければカウントを増加
+                    if (serialReceive.Flag == 1 || serialReceive.Flag == 2) 
                     {
-                        leftRightCount++;
-                        wasLeft = true;
+                        // 振り回し動作を開始する
+                        if (!isSwinging)
+                        {
+                            isSwinging = true;
+                            swingDirection = serialReceive.Flag == 1 ? -1 : 1; // 振り回しの方向を設定
+                            swingTime = 0; // 経過時間のリセット
+                        }
+
+                        // 振り回し動作を実行する
+                        swingTime += Time.deltaTime * swingSpeed;
+                        float angle = Mathf.Sin(swingTime) * swingAmount; // 振り回しの角度を計算
+                        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + angle * swingDirection, 0);
+
+                        // 振り回しが終了したらフラグをリセット
+                        if (swingTime > Mathf.PI * 2) // 振り回しが一周したら終了
+                        {
+                            isSwinging = false;
+                            swingTime = 0;
+                        }
                     }
                 }
-                else if (serialReceive.Flag == 2) // マウス操作用
+
+                // 左右に一回ずつ振ったら前進
+                if (leftRightCount >= 2)
                 {
-                    // Y軸30度回転
-                    transform.rotation = Quaternion.Euler(0, 50, 0);
-                    if (wasLeft) // 前回が左だったらカウントを増加
-                    {
-                        leftRightCount++;
-                        wasLeft = false;
-                    }
-                }
-                else
-                {
-                    // x値だけをリセットした位置を取得
-                    currentPosition.x = 0;
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                    currentPosition.z += 10; // 前進させる
+                    transform.position = currentPosition;
+                    leftRightCount = 0; // カウントをリセット
                 }
             }
             else if (!SerialHandler.Settingsflag)
@@ -72,23 +97,25 @@ public class OperationSettings : MonoBehaviour
                 float h = Input.GetAxis("Horizontal"); // 左右キーの取得
                 transform.Rotate(0, rotationSpeed * h * 25, 0);
 
-                // マウスのX方向の移動距離を計算
-                Vector3 currentMousePosition = Input.mousePosition;
-                float mouseDeltaX = currentMousePosition.x - lastMousePosition.x;
+                Debug.Log(h);
 
-                // マウスの移動に応じてプレイヤーを回転
-                transform.Rotate(0, mouseDeltaX * rotationSpeed, 0);
+                // // マウスのX方向の移動距離を計算
+                // Vector3 currentMousePosition = Input.mousePosition;
+                // float mouseDeltaX = currentMousePosition.x - lastMousePosition.x;
 
-                // マウスの移動距離に応じて前進
-                if (Mathf.Abs(mouseDeltaX) > 0)
-                {
-                    transform.position += transform.forward * Mathf.Abs(mouseDeltaX) * moveSpeed * 10;
-                    // 高さは固定
-                    transform.position = new Vector3(transform.position.x, 30, transform.position.z);
-                }
+                // // マウスの移動に応じてプレイヤーを回転
+                // transform.Rotate(0, mouseDeltaX * rotationSpeed, 0);
 
-                // 現在のマウス位置を次のフレーム用に保存
-                lastMousePosition = currentMousePosition;
+                // // マウスの移動距離に応じて前進
+                // if (Mathf.Abs(mouseDeltaX) > 0)
+                // {
+                //     transform.position += transform.forward * Mathf.Abs(mouseDeltaX) * moveSpeed * 10;
+                //     // 高さは固定
+                //     transform.position = new Vector3(transform.position.x, 30, transform.position.z);
+                // }
+
+                // // 現在のマウス位置を次のフレーム用に保存
+                // lastMousePosition = currentMousePosition;
             }
         }
     }
