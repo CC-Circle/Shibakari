@@ -19,6 +19,8 @@ public class CollisionDetection : MonoBehaviour
 
     public GameObject newPrefab; // 新しいオブジェクトのプレハブ
 
+    public int isMoguraDestory = 0; // モグラが破壊されたかどうかの判定フラグ
+
     // 衝突した時に呼ばれる関数
     void OnCollisionEnter(Collision collision)
     {
@@ -94,8 +96,10 @@ public class CollisionDetection : MonoBehaviour
             // モグラを消すフラグが立っている場合、オブジェクトを消す
             if (MoleObject != null)
             {
+                Debug.Log("Mole Destroyed");
                 Destroy(MoleObject); // モグラを消す
                 ScoreFlag = 2; // スコアフラグを立てる
+                isMoguraDestory = 1;
             }
         }
         // 現在のシーンが "end" の場合

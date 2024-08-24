@@ -11,7 +11,7 @@ public class SerialReceive : MonoBehaviour
     public float pitch, roll, yaw; // 磁気
     private float temp; // 温度
 
-    public int Flag { get; set; } 
+    public int Flag { get; set; }
 
     void Start()
     {
@@ -68,37 +68,37 @@ public class SerialReceive : MonoBehaviour
                 //Debug.Log($"Received accel data: X:{accX}, Y:{accY}, Z:{accZ}");
 
                 // 移動のためのフラッグ
-                if(accX > 0.8f)
+                if (accX > 0.8f)
                 {
                     // 右
-                    Flag=1;
+                    Flag = 1;
                 }
-                else if(accX < -0.8f)
+                else if (accX < -0.8f)
                 {
                     // 左
-                    Flag=2;
+                    Flag = 2;
                 }
-                else if(accY > 0.5)
+                else if (accY > 0.5)
                 {
                     // 上
-                    Flag=3;
+                    Flag = 3;
                 }
                 else
                 {
                     // 真ん中
-                    Flag=0;
+                    Flag = 0;
                 }
                 // Debug.Logへの表示
                 // Debug.Log(Flag);
             }
             else
             {
-                Debug.LogWarning("Insufficient data sections after splitting.");
+                // Debug.LogWarning("Insufficient data sections after splitting.");
             }
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Error parsing data: {e.Message}");
+            // Debug.LogError($"Error parsing data: {e.Message}");
         }
     }
 }

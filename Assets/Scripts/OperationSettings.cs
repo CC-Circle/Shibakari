@@ -88,7 +88,7 @@ public class OperationSettings : MonoBehaviour
                 float h = Input.GetAxis("Horizontal"); // 左右キーの取得
                 transform.Rotate(0, rotationSpeed * h * 0.1f, 0);
 
-                Debug.Log(h);
+                // Debug.Log(h);
 
                 // マウスのX方向の移動距離を計算
                 Vector3 currentMousePosition = Input.mousePosition;
