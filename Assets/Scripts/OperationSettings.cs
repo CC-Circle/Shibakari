@@ -4,123 +4,110 @@ using UnityEngine;
 
 public class OperationSettings : MonoBehaviour
 {
-    public float moveSpeed = 0.001f;
+    public float moveSpeed = 70f;
     public GameObject mainCamera;
     public SerialReceive serialReceive;
     private int leftRightCount = 0;
     private bool wasLeft = false;
+    private bool isSwinging = false; // 振り回し動作のフラグ
+    private float swingDirection = 0; // 現在の振り回し方向
+    private float swingAmount = 30f; // 振り回しの角度
+    private float swingSpeed = 50f; // 振り回しの速度
+    private float swingTime = 0; // 振り回しの経過時間
     public GameObject M5Stack;
-    private float currentRotationY = 0f;
     public float distanceFromCamera = 5f; // カメラからの距離
+    private Vector3 lastMousePosition;
+
+    void Start()
+    {
+        // 初期化時にマウスの位置を保存
+        lastMousePosition = Input.mousePosition;
+    }
 
     void Update()
     {
+        bool isRotating = false; // 視点操作が実行されているかどうかを判定するフラグ
+
         if (ReadyToStart.flag)
         {
-            //Flagを入手するためのコード
+            // Flagを入手するためのコード
             SerialHandler SerialHandler; //呼ぶスクリプトにあだなつける
             GameObject M5Stack = GameObject.Find("M5stack_Evnet"); //Playerっていうオブジェクトを探す
             SerialHandler = M5Stack.GetComponent<SerialHandler>(); //付いているスクリプトを取得
 
-            float rotationSpeed = 90f; // 回転速度
-            float moveAmount = 5f * Time.deltaTime;
-            
+            // ジャイロを入手するためのコード
+            SerialReceive SerialReceive; //呼ぶスクリプトにあだなつける
+            SerialReceive = M5Stack.GetComponent<SerialReceive>(); //付いているスクリプトを取得
+
+            float rotationSpeed = 10f; // 回転速度
+            float moveAmount = 1f * Time.deltaTime;
+
             // 現在の位置を取得
             Vector3 currentPosition = transform.position;
 
+            // M5Stack
             if (SerialHandler.Settingsflag)
-            { //M5Stack操作
+            {
+                 // 視点操作が実行されていない場合のみ振り回し操作を行う
+                if (!isRotating)
+                {
+                    if (serialReceive.Flag == 1 || serialReceive.Flag == 2)
+                    {
+                        // 振り回し動作を開始する
+                        if (!isSwinging)
+                        {
+                            isSwinging = true;
+                            swingDirection = serialReceive.Flag == 1 ? -1 : 1; // 振り回しの方向を設定
+                            swingTime = 0; // 経過時間のリセット
+                        }
 
-                if (serialReceive.Flag == 1)
-                {
-                    // Y軸-30度回転
-                    transform.rotation = Quaternion.Euler(0, -50, 0);
-                    if (!wasLeft) // 前回が左でなければカウントを増加
-                    {
-                        leftRightCount++;
-                        wasLeft = true;
+                        // 振り回し動作を実行する
+                        swingTime += Time.deltaTime * swingSpeed;
+                        float angle = Mathf.Sin(swingTime) * swingAmount; // 振り回しの角度を計算
+                        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + angle * swingDirection, 0);
+
+                        // 振り回しが終了したらフラグをリセット
+                        if (swingTime > Mathf.PI * 2) // 振り回しが一周したら終了
+                        {
+                            isSwinging = false;
+                            swingTime = 0;
+                            leftRightCount++;
+                        }
                     }
                 }
-                else if (serialReceive.Flag == 2) // マウス操作用
+
+                // 左右に一回ずつ振ったら前進
+                if (leftRightCount >= 2)
                 {
-                    // Y軸30度回転
-                    transform.rotation = Quaternion.Euler(0, 50, 0);
-                    if (wasLeft) // 前回が左だったらカウントを増加
-                    {
-                        leftRightCount++;
-                        wasLeft = false;
-                    }
-                }
-                else
-                {
-                    // x値だけをリセットした位置を取得
-                    currentPosition.x = 0;
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                    transform.position += transform.forward * 10; // プレイヤーの向いている方向に前進
+                    leftRightCount = 0; // カウントをリセット
                 }
             }
             else if (!SerialHandler.Settingsflag)
             {
-                // マウスのビューポート座標を取得 (0.0から1.0の範囲)
-                Vector3 mouseViewportPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+                // // 十字キーでの進行方向変更（回転）
+                // float h = Input.GetAxis("Horizontal"); // 左右キーの取得
+                // transform.Rotate(0, rotationSpeed * h * 25, 0);
 
-                // ビューポートのx座標に基づいて判断
-                float mouseX = mouseViewportPosition.x;
+                // Debug.Log(h);
 
-                if (mouseX < 0.4f)
-                {
-                    if (!wasLeft) // 前回が左でなければカウントを増加
-                    {
-                        // Y軸-30度回転
-                        transform.rotation = Quaternion.Euler(0, -50, 0);
-                        leftRightCount++;
-                        wasLeft = true;
-                    }
-                }
-                else if (mouseX > 0.6f)
-                {
-                    if (wasLeft) // 前回が左だったらカウントを増加
-                    {
-                        // Y軸30度回転
-                        transform.rotation = Quaternion.Euler(0, 50, 0);
-                        leftRightCount++;
-                        wasLeft = false;
-                    }
-                }
-                else
-                {
-                    // x値だけをリセットした位置を取得
-                    currentPosition.x = 0;
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
-                }
-            }
+                // // マウスのX方向の移動距離を計算
+                // Vector3 currentMousePosition = Input.mousePosition;
+                // float mouseDeltaX = currentMousePosition.x - lastMousePosition.x;
 
-            // 前後移動
-            if (leftRightCount >= 2)
-            {
-                currentPosition.z += 10;
-                transform.position = currentPosition;
-                leftRightCount = 0;
-            }
+                // // マウスの移動に応じてプレイヤーを回転
+                // transform.Rotate(0, mouseDeltaX * rotationSpeed, 0);
 
-            // 左右移動と回転
-            if (Input.GetKey(KeyCode.A))
-            {
-                // 左に移動
-                currentRotationY += rotationSpeed * Time.deltaTime;
-                transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-                // カメラも回転
-                mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-                mainCamera.transform.Translate(Vector3.left * moveAmount);
-            }
+                // // マウスの移動距離に応じて前進
+                // if (Mathf.Abs(mouseDeltaX) > 0)
+                // {
+                //     transform.position += transform.forward * Mathf.Abs(mouseDeltaX) * moveSpeed * 10;
+                //     // 高さは固定
+                //     transform.position = new Vector3(transform.position.x, 30, transform.position.z);
+                // }
 
-            if (Input.GetKey(KeyCode.D))
-            {
-                // 右に移動
-                currentRotationY -= rotationSpeed * Time.deltaTime;
-                transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-                // カメラも回転
-                mainCamera.transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-                mainCamera.transform.Translate(Vector3.right * moveAmount);
+                // // 現在のマウス位置を次のフレーム用に保存
+                // lastMousePosition = currentMousePosition;
             }
         }
     }
