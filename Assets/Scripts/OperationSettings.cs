@@ -31,13 +31,13 @@ public class OperationSettings : MonoBehaviour
         if (ReadyToStart.flag)
         {
             // Flagを入手するためのコード
-            SerialHandler SerialHandler;
-            GameObject M5Stack = GameObject.Find("M5stack_Evnet");
-            SerialHandler = M5Stack.GetComponent<SerialHandler>();
+            SerialHandler SerialHandler; //呼ぶスクリプトにあだなつける
+            GameObject M5Stack = GameObject.Find("M5stack_Evnet"); //Playerっていうオブジェクトを探す
+            SerialHandler = M5Stack.GetComponent<SerialHandler>(); //付いているスクリプトを取得
 
             // ジャイロを入手するためのコード
-            SerialReceive SerialReceive;
-            SerialReceive = M5Stack.GetComponent<SerialReceive>();
+            SerialReceive SerialReceive; //呼ぶスクリプトにあだなつける
+            SerialReceive = M5Stack.GetComponent<SerialReceive>(); //付いているスクリプトを取得
 
             float rotationSpeed = 10f; // 回転速度
             float moveAmount = 1f * Time.deltaTime;
@@ -49,10 +49,11 @@ public class OperationSettings : MonoBehaviour
             if (SerialHandler.Settingsflag)
             {
                 // 視点操作
-                float pitch = SerialReceive.pitch;
-                if (Mathf.Abs(pitch) > 40) {
-                    float rotation = pitch * rotationSpeed * Time.deltaTime;
-                    transform.Rotate(0, rotation, 0);  // 継続的に回転
+                if (SerialReceive.pitch < -40) {
+                    transform.Rotate(0, rotationSpeed * Time.deltaTime * -1, 0);  // 左に継続的に回転
+                    isRotating = true;
+                } else if (SerialReceive.pitch > 40) {
+                    transform.Rotate(0, rotationSpeed * Time.deltaTime * 1, 0);   // 右に継続的に回転
                     isRotating = true;
                 }
 
@@ -93,11 +94,11 @@ public class OperationSettings : MonoBehaviour
             }
             else if (!SerialHandler.Settingsflag)
             {
-                // 十字キーでの進行方向変更（回転）
-                float h = Input.GetAxis("Horizontal"); // 左右キーの取得
-                transform.Rotate(0, rotationSpeed * h * 25, 0);
+                // // 十字キーでの進行方向変更（回転）
+                // float h = Input.GetAxis("Horizontal"); // 左右キーの取得
+                // transform.Rotate(0, rotationSpeed * h * 25, 0);
 
-                Debug.Log(h);
+                // Debug.Log(h);
 
                 // // マウスのX方向の移動距離を計算
                 // Vector3 currentMousePosition = Input.mousePosition;
