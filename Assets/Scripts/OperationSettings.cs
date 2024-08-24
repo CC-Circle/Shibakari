@@ -48,19 +48,10 @@ public class OperationSettings : MonoBehaviour
             // M5Stack
             if (SerialHandler.Settingsflag)
             {
-                // 視点操作
-                if (SerialReceive.pitch < -40) {
-                    transform.Rotate(0, rotationSpeed * Time.deltaTime * -1, 0);  // 左に継続的に回転
-                    isRotating = true;
-                } else if (SerialReceive.pitch > 40) {
-                    transform.Rotate(0, rotationSpeed * Time.deltaTime * 1, 0);   // 右に継続的に回転
-                    isRotating = true;
-                }
-
-                // 視点操作が実行されていない場合のみ刈り操作を行う
-                if (!isRotating) 
+                 // 視点操作が実行されていない場合のみ振り回し操作を行う
+                if (!isRotating)
                 {
-                    if (serialReceive.Flag == 1 || serialReceive.Flag == 2) 
+                    if (serialReceive.Flag == 1 || serialReceive.Flag == 2)
                     {
                         // 振り回し動作を開始する
                         if (!isSwinging)
@@ -80,6 +71,7 @@ public class OperationSettings : MonoBehaviour
                         {
                             isSwinging = false;
                             swingTime = 0;
+                            leftRightCount++;
                         }
                     }
                 }
@@ -87,8 +79,7 @@ public class OperationSettings : MonoBehaviour
                 // 左右に一回ずつ振ったら前進
                 if (leftRightCount >= 2)
                 {
-                    currentPosition.z += 10; // 前進させる
-                    transform.position = currentPosition;
+                    transform.position += transform.forward * 10; // プレイヤーの向いている方向に前進
                     leftRightCount = 0; // カウントをリセット
                 }
             }
