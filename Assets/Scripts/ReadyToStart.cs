@@ -20,11 +20,11 @@ public class ReadyToStart : MonoBehaviour
     void Update()
     {
         //4秒後にflagをTrueにする
-        if (Time.timeSinceLevelLoad >= 3)
+        if (Time.timeSinceLevelLoad >= 2)
         {
             flag = true;
             ReadyText.text = "Start!";
-            if (Time.timeSinceLevelLoad > 5)
+            if (Time.timeSinceLevelLoad > 3)
             {
                 ReadyText.text = "";
             }
@@ -32,7 +32,7 @@ public class ReadyToStart : MonoBehaviour
         else
         {
             // カウントダウンを表示
-            ReadyText.text = Mathf.FloorToInt(4 - Time.timeSinceLevelLoad).ToString("F0");
+            ReadyText.text = Mathf.FloorToInt(3 - Time.timeSinceLevelLoad).ToString("F0");
         }
 
         // Debug.Log(flag);

@@ -8,7 +8,6 @@ public class OperationSettings : MonoBehaviour
     public GameObject mainCamera;
     public SerialReceive serialReceive;
     private int leftRightCount = 0;
-    private bool wasLeft = false;
     private bool isSwinging = false; // 振り回し動作のフラグ
     private float swingDirection = 0; // 現在の振り回し方向
     private float swingAmount = 30f; // 振り回しの角度
@@ -48,7 +47,7 @@ public class OperationSettings : MonoBehaviour
             // M5Stack
             if (SerialHandler.Settingsflag)
             {
-                 // 視点操作が実行されていない場合のみ振り回し操作を行う
+                // 視点操作が実行されていない場合のみ振り回し操作を行う
                 if (!isRotating)
                 {
                     if (serialReceive.Flag == 1 || serialReceive.Flag == 2)
@@ -85,29 +84,29 @@ public class OperationSettings : MonoBehaviour
             }
             else if (!SerialHandler.Settingsflag)
             {
-                // // 十字キーでの進行方向変更（回転）
-                // float h = Input.GetAxis("Horizontal"); // 左右キーの取得
-                // transform.Rotate(0, rotationSpeed * h * 25, 0);
+                // 十字キーでの進行方向変更（回転）
+                float h = Input.GetAxis("Horizontal"); // 左右キーの取得
+                transform.Rotate(0, rotationSpeed * h * 0.1f, 0);
 
                 // Debug.Log(h);
 
-                // // マウスのX方向の移動距離を計算
-                // Vector3 currentMousePosition = Input.mousePosition;
-                // float mouseDeltaX = currentMousePosition.x - lastMousePosition.x;
+                // マウスのX方向の移動距離を計算
+                Vector3 currentMousePosition = Input.mousePosition;
+                float mouseDeltaX = currentMousePosition.x - lastMousePosition.x;
 
-                // // マウスの移動に応じてプレイヤーを回転
-                // transform.Rotate(0, mouseDeltaX * rotationSpeed, 0);
+                // マウスの移動に応じてプレイヤーを回転
+                transform.Rotate(0, mouseDeltaX * rotationSpeed * 0.001f, 0);
 
-                // // マウスの移動距離に応じて前進
-                // if (Mathf.Abs(mouseDeltaX) > 0)
-                // {
-                //     transform.position += transform.forward * Mathf.Abs(mouseDeltaX) * moveSpeed * 10;
-                //     // 高さは固定
-                //     transform.position = new Vector3(transform.position.x, 30, transform.position.z);
-                // }
+                // マウスの移動距離に応じて前進
+                if (Mathf.Abs(mouseDeltaX) > 0)
+                {
+                    transform.position += transform.forward * Mathf.Abs(mouseDeltaX) * moveSpeed * 10;
+                    // 高さは固定
+                    transform.position = new Vector3(transform.position.x, 30, transform.position.z);
+                }
 
-                // // 現在のマウス位置を次のフレーム用に保存
-                // lastMousePosition = currentMousePosition;
+                // 現在のマウス位置を次のフレーム用に保存
+                lastMousePosition = currentMousePosition;
             }
         }
     }

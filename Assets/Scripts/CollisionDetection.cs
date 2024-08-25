@@ -17,7 +17,11 @@ public class CollisionDetection : MonoBehaviour
 
     AudioSource audioSource; // オーディオを格納する変数
 
+    public AudioSource moleCollisionSound;
+
     public GameObject newPrefab; // 新しいオブジェクトのプレハブ
+
+    public int isMoguraDestory = 0; // モグラが破壊されたかどうかの判定フラグ
 
     // 衝突した時に呼ばれる関数
     void OnCollisionEnter(Collision collision)
@@ -67,35 +71,40 @@ public class CollisionDetection : MonoBehaviour
         // 現在のシーンが "main" の場合
         else if (NowScene == "main")
         {
-            // 草を消すフラグが立っている場合、オブジェクトを消す
-            if (Grassbject != null)
+            if (ReadyToStart.flag)
             {
-                Vector3 position = Grassbject.transform.position; // オブジェクトの位置を取得
-                position.y = 0; // Y軸の位置を0に固定
-                Destroy(Grassbject); // 草を消す
-                audioSource.PlayOneShot(audioSource.clip); // オーディオを再生
-                ScoreFlag = 1; // スコアフラグを立てる
-
-                // 新しいオブジェクトを元の位置に生成
-                Instantiate(newPrefab, position, Quaternion.Euler(90, 0, 0));
-                position.x -= 5; // Y軸の位置を0に固定
-                position.z -= 5; // Y軸の位置を0に固定
-                Instantiate(newPrefab, position, Quaternion.Euler(90, 0, 0));
-                // 生成したオブジェクトにタグを追加
-                newPrefab.tag = "AfterGrass";
-                // 生成したオブジェクトにAutoDestroyAndSpawnスクリプトを追加
-                if (newPrefab.GetComponent<AutoDestroyAndSpawn>() == null)
+                // 草を消すフラグが立っている場合、オブジェクトを消す
+                if (Grassbject != null)
                 {
-                    AutoDestroyAndSpawn autoDestroy = newPrefab.AddComponent<AutoDestroyAndSpawn>();
-                    autoDestroy.lifetime = 5f; // 5秒後に破壊されるように設定
-                }
-            }
+                    Vector3 position = Grassbject.transform.position; // オブジェクトの位置を取得
+                    position.y = 0; // Y軸の位置を0に固定
+                    Destroy(Grassbject); // 草を消す
+                    audioSource.PlayOneShot(audioSource.clip); // オーディオを再生
+                    ScoreFlag = 1; // スコアフラグを立てる
 
-            // モグラを消すフラグが立っている場合、オブジェクトを消す
-            if (MoleObject != null)
-            {
-                Destroy(MoleObject); // モグラを消す
-                ScoreFlag = 2; // スコアフラグを立てる
+                    // 新しいオブジェクトを元の位置に生成
+                    Instantiate(newPrefab, position, Quaternion.Euler(90, 0, 0));
+                    position.x -= 5; // Y軸の位置を0に固定
+                    position.z -= 5; // Y軸の位置を0に固定
+                    Instantiate(newPrefab, position, Quaternion.Euler(90, 0, 0));
+                    // 生成したオブジェクトにタグを追加
+                    newPrefab.tag = "AfterGrass";
+                    // 生成したオブジェクトにAutoDestroyAndSpawnスクリプトを追加
+                    if (newPrefab.GetComponent<AutoDestroyAndSpawn>() == null)
+                    {
+                        AutoDestroyAndSpawn autoDestroy = newPrefab.AddComponent<AutoDestroyAndSpawn>();
+                        autoDestroy.lifetime = 5f; // 5秒後に破壊されるように設定
+                    }
+                }
+
+                // モグラを消すフラグが立っている場合、オブジェクトを消す
+                if (MoleObject != null)
+                {
+                    Destroy(MoleObject); // モグラを消す
+                    audioSource.PlayOneShot(moleCollisionSound.clip); // オーディオを再生
+                    ScoreFlag = 2; // スコアフラグを立てる
+                    isMoguraDestory = 1;
+                }
             }
         }
         // 現在のシーンが "end" の場合

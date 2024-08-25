@@ -24,11 +24,11 @@ public class AutoDestroyAndSpawn : MonoBehaviour
 
         // オブジェクトを破壊
         Destroy(gameObject);
-        Debug.Log("Destroyed " + gameObject.name + " after " + lifetime + " seconds");
+        // Debug.Log("Destroyed " + gameObject.name + " after " + lifetime + " seconds");
 
         // 新しいオブジェクトを初期位置に生成
         initialPosition.y = 13.5f; // オブジェクトが地面に埋まらないように少し浮かせる    
         Instantiate(spawnPrefab, initialPosition, Quaternion.Euler(270, 0, 0));
-        Debug.Log("Spawned new object at " + initialPosition);
+        // Debug.Log("Spawned new object at " + initialPosition);
     }
 }
