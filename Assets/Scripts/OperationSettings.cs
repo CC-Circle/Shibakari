@@ -82,6 +82,7 @@ public class OperationSettings : MonoBehaviour
                     leftRightCount = 0; // カウントをリセット
                 }
             }
+            //マウス
             else if (!SerialHandler.Settingsflag)
             {
                 // 十字キーでの進行方向変更（回転）

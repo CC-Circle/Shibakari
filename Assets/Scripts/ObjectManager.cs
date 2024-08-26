@@ -97,6 +97,8 @@ public class ObjectManager : MonoBehaviour
             // 現在のオブジェクトのY軸が2.5以下かどうかをチェック
             if (targetPosition.y <= 8)
             {
+                //Debug.Log(WriteScore.score);
+
                 if(Flag==false){
                     COUNT=WriteScore.score/100-1;
                     Flag=true;

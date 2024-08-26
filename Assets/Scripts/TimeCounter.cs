@@ -53,7 +53,6 @@ public class TimeCounter : MonoBehaviour
         if (CountTime <= 0) // カウントが0になったら
         {
             PauseTime += Time.deltaTime; // 一時停止時間の計測開始
-            Debug.Log(PauseTime);
 
             foreach (GameObject UiElement in UiElements)
             {

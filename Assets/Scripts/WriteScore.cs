@@ -13,21 +13,15 @@ public class WriteScore : MonoBehaviour
     public TextMeshProUGUI scoreText;//スコアを入れるテキスト
 
     //リザルト用
-    public bool flag=false;
+    public  bool flag=false;
+    public static int ScoreFlag=0;
 
     void Start()
     {
         nowScene = SceneManager.GetActiveScene().name; // 現在のシーン名を変数に代入
         // コリジョンデテクションスクリプトを動的に取得
         GameObject cylinder = GameObject.Find("円柱"); // 円柱オブジェクトを探す
-        if (cylinder != null)
-        {
-            collisionDetection = cylinder.GetComponent<CollisionDetection>(); // 付いているスクリプトを取得
-        }
-        else
-        {
-            Debug.LogError("円柱オブジェクトが見つかりません。");
-        }
+        collisionDetection = cylinder.GetComponent<CollisionDetection>(); // 付いているスクリプトを取得
     }
 
     void Update()
@@ -54,10 +48,10 @@ public class WriteScore : MonoBehaviour
                 Score = 0;
             }
             // リザルトの処理
-            if (collisionDetection != null && collisionDetection.ScoreFlag == 1)
+            if (ScoreFlag == 1)
             {
                 Score += 100;
-                collisionDetection.ScoreFlag = 0; // フラグをリセット（必要に応じて）
+                ScoreFlag = 0;
             }
         }
 

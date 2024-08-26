@@ -110,13 +110,7 @@ public class CollisionDetection : MonoBehaviour
         // 現在のシーンが "end" の場合
         else if (NowScene == "end")
         {
-            // 草を消すフラグが立っている場合、オブジェクトを消す
-            if (Grassbject != null)
-            {
-                Destroy(Grassbject); // 草を消す
-                transform.localScale += new Vector3(0.1f, 0.1f, 0.1f); // x、y、z方向それぞれに0.1ずつサイズを増加させる
-                ScoreFlag = 1; // スコアフラグを立てる
-            }
+            
         }
     }
 }
