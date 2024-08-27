@@ -8,25 +8,32 @@ public class MySceneManager : MonoBehaviour
     //シーンチェンジスクリプト
     private string NowScene; // クラスレベルで変数を宣言
     public bool flag;
+    KusakariControl KusakariControl;
+
+    // Startは最初のフレームで1回だけ呼び出される
+    void Start()
+    {
+        KusakariControl = FindObjectOfType<KusakariControl>();
+    }
 
     // Updateは毎フレーム呼び出される
     void Update()
     {
         NowScene = SceneManager.GetActiveScene().name; // 現在のシーン名を変数に代入
 
-        if(NowScene == "start")
+        if (NowScene == "start")
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (KusakariControl.ChangeMain == 1)
             {
-                flag=false;
+                flag = false;
                 SceneManager.LoadScene("main"); // シーンを"main"に変更
             }
         }
-        else if(NowScene == "main")
+        else if (NowScene == "main")
         {
-            if(flag)
+            if (flag)
             {
-                flag=false;
+                flag = false;
                 SceneManager.LoadScene("end"); // シーンを"end"に変更
             }
         }
